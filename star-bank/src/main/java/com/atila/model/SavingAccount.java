@@ -11,8 +11,8 @@ public final class SavingAccount extends Account {
     private Integer withdrawLimit = 0;//Max 5
 
     public SavingAccount(Integer accountNumber, double balance, Date date, Client client, Status status,
-            Category category) {
-        super(accountNumber, balance, date, client, status, category);
+            Category category,String user,String password) {
+        super(accountNumber, balance, date, client, status, category, user, password);
     }
 
     public double getInterestRate() {

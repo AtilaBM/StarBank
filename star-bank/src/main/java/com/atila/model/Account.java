@@ -12,12 +12,15 @@ public abstract class Account {
     protected Integer accountNumber;
     protected double balance;
     private Date date;
+    protected String user;
+    protected String password;
 
     protected Client client;
     protected Status status;
     protected Category category;
 
-    public Account(Integer accountNumber, double balance, Date date, Client client, Status status, Category category) {
+    public Account(Integer accountNumber, double balance, Date date, Client client, Status status, Category category,
+            String user, String password) {
 
         if (accountNumber == null || accountNumber <= 0) {
             throw new IllegalArgumentException("Invalid account number");
@@ -34,6 +37,12 @@ public abstract class Account {
         if (category == null) {
             throw new IllegalArgumentException("Category cannot be null");
         }
+        if (user == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+        if (password == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
 
         this.accountNumber = accountNumber;
         this.balance = balance;
@@ -41,6 +50,8 @@ public abstract class Account {
         this.client = client;
         this.status = status;
         this.category = category;
+        this.user = user;
+        this.password = password;
 
     }
 
@@ -80,6 +91,22 @@ public abstract class Account {
         return category;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public abstract void deposit(double amount);
 
     public abstract void withdraw(double amount);
@@ -93,6 +120,7 @@ public abstract class Account {
                 %s
                 ACCOUNT DETAILS
                 %s
+                User : %s
                 Account Number : %d
                 Balance        : R$ %.2f
                 Opening Date   : %s
@@ -102,12 +130,13 @@ public abstract class Account {
                 %s""",
                 line,
                 line,
+                user,
                 accountNumber,
                 balance,
                 dateFormat.format(date),
                 status,
                 category,
-                client.toString(), 
+                client.toString(),
                 line);
     }
 

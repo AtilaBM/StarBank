@@ -11,8 +11,8 @@ public final class CheckingAccount extends Account {
     private double dailyWithdrawLimit = 0.0;// MAX 2000.00
 
     public CheckingAccount(Integer accountNumber, double balance, Date date, Client client, Status status,
-            Category category) {
-        super(accountNumber, balance, date, client, status, category);
+            Category category,String user,String password) {
+        super(accountNumber, balance, date, client, status, category, user, password);
 
     }
 

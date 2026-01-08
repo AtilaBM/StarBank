@@ -70,6 +70,7 @@ public class BankService {
     public void createSavingAccount(Scanner sc) {
 
         System.out.print("Name: ");
+        sc.nextLine();
         String name = sc.nextLine();
         System.out.print("age: ");
         Integer age = sc.nextInt();
@@ -77,42 +78,57 @@ public class BankService {
         String cpf = sc.next();
         System.out.print("Phone: ");
         String phone = sc.next();
+        sc.nextLine();
+        System.out.println("═════════════════════");
+        System.out.print("User: ");
+        String user = sc.nextLine();
+        System.out.print("Password: ");
+        String password = sc.nextLine();
 
         Status status = Status.ACTIVE;
         Category category = Category.SAVING;
 
         Client client = new Client(name, age, cpf, phone);
 
-        SavingAccount savingsAccount = new SavingAccount(nextAccountNumber(), 0, new Date(), client,
-                status, category);
+        SavingAccount savingAccount = new SavingAccount(nextAccountNumber, 0, new  Date(), client, status, category, user, password);
 
-        addAccount(savingsAccount);
+        addAccount(savingAccount);
 
-        System.out.println("Account Criated");
+        System.out.println();
+        System.out.println("Account Criated!!!");
 
     }
 
     public void createCheckingAccount(Scanner sc) {
 
         System.out.print("Name: ");
-        String name = sc.next();
+        sc.nextLine();
+        String name = sc.nextLine();
         System.out.print("age: ");
         Integer age = sc.nextInt();
         System.out.print("CPF: ");
         String cpf = sc.next();
         System.out.print("Phone: ");
         String phone = sc.next();
+        sc.nextLine();
+        
+        System.out.println("═════════════════════");
+        System.out.print("User: ");
+        String user = sc.nextLine();
+        System.out.print("Password: ");
+        String password = sc.nextLine();
 
         Status status = Status.ACTIVE;
         Category category = Category.CHECKING;
 
         Client client = new Client(name, age, cpf, phone);
 
-        CheckingAccount checkingAccount = new CheckingAccount(nextAccountNumber(), 0, new Date(), client, status,
-                category);
+        CheckingAccount checkingAccount = new CheckingAccount(nextAccountNumber, 0, new  Date(), client, status, category, user, password);
 
         addAccount(checkingAccount);
-        System.out.println("Account Criated");
+        
+        System.out.println();
+        System.out.println("Account Criated!!!");
 
     }
 
@@ -131,11 +147,11 @@ public class BankService {
         Integer op = sc.nextInt();
 
         if (op == 1) {
-            System.out.print("Enter your Account Number: ");
+            System.out.print("Enter Account Number: ");
             Integer accountNumber = sc.nextInt();
             return searchAccountByNumber(accountNumber);
         } else if (op == 2) {
-            System.out.print("Enter your CPF: ");
+            System.out.print("Enter CPF: ");
             String cpf = sc.next();
             return searchAccountByCpf(cpf);
         } else {
@@ -149,24 +165,35 @@ public class BankService {
         Client client1 = new Client("Joao Silva", 28, "12345678901", "11987654321");
         SavingAccount acc1 = new SavingAccount(
                 nextAccountNumber(), 500.0, new Date(),
-                client1, Status.ACTIVE, Category.SAVING);
+                client1, Status.ACTIVE, Category.SAVING, "joao", "joao123");
         addAccount(acc1);
 
         // Conta 2 - Maria
         Client client2 = new Client("Maria Santos", 35, "98765432100", "21976543210");
         CheckingAccount acc2 = new CheckingAccount(
                 nextAccountNumber(), 1000.0, new Date(),
-                client2, Status.ACTIVE, Category.CHECKING);
+                client2, Status.ACTIVE, Category.CHECKING, "maria", "maria123");
         addAccount(acc2);
 
         // Conta 3 - Pedro
         Client client3 = new Client("Pedro Costa", 42, "55566677788", "11955667788");
         SavingAccount acc3 = new SavingAccount(
                 nextAccountNumber(), 250.0, new Date(),
-                client3, Status.ACTIVE, Category.SAVING);
+                client3, Status.ACTIVE, Category.SAVING, "pedro", "pedro123");
         addAccount(acc3);
 
     }
 
+    public Account login(String user, String password) {
+        if (user == null || password == null) {
+            throw new IllegalArgumentException("User or password cannot be null");
 
+        }
+        for (Account account : accounts) {
+            if (account.getUser().equals(user) && account.getPassword().equals(password)) {
+                return account;
+            }
+        }
+        throw new IllegalArgumentException("Account not found");
+    }
 }
