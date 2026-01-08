@@ -1,43 +1,143 @@
 package com.atila;
 
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+import com.atila.enums.*;
+
+import com.atila.model.*;
 import com.atila.service.BankService;
 import com.atila.view.Menu;
 
 public class Main {
 
-    private   static  BankService bankService = new BankService();
-    private   static  Menu menu = new Menu();
+    private static BankService bankService = new BankService();
+    private static Menu menu = new Menu();
 
     public static void main(String[] args) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Scanner sc = new Scanner(System.in);
 
-        boolean active = false;
+        boolean active = true;
 
-        while (!active) {
-           menu.inicialMenu();
-           Integer op = sc.nextInt();
+        bankService.testAccounts();
 
-           switch (op) {
-            case 1:
-                
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                
-                break;
-            case 0:
-                System.out.println("Exiting...");
-                return;
-            default:
-                System.out.println("INVALID");
-                break;
-           }
+        while (active) {
+            menu.inicialMenu();
+            Integer op = sc.nextInt();
+
+            switch (op) {
+                case 1:
+                    bankService.createSavingAccount(sc);
+                    break;
+                case 2:
+                    bankService.createCheckingAccount(sc);
+                    break;
+                case 3:
+                    active = false;
+                    break;
+                case 0:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Option invalid");
+                    break;
+            }
+        }
+
+        active = true;
+        while (active) {
+            menu.principalMenu();
+            Integer op = sc.nextInt();
+
+            switch (op) {
+                case 1:
+                    Account account = bankService.searchAccount(sc);
+
+                    System.out.println("DEPOSIT:");
+                    System.out.print("Value to deposit: ");
+                    double amount = sc.nextDouble();
+                    account.deposit(amount);
+
+                    break;
+                case 2:
+                    account = bankService.searchAccount(sc);
+                    System.out.println("WITHDRAW:");
+                    System.out.print("Value to withdraw: ");
+                    amount = sc.nextDouble();
+                    account.withdraw(amount);
+
+                    break;
+                case 3:
+                    account = bankService.searchAccount(sc);
+
+                    if (account.getCategory().equals(Category.SAVING)) {
+                        SavingAccount savingAccount = (SavingAccount) account;
+                        savingAccount.calculateInterest();
+                        System.out.println(account.toString());
+                    } else {
+
+                        System.out.println(account.toString());
+                    }
+
+                    break;
+                case 4:
+                    System.out.println("Sender:");
+                    Account accountA = bankService.searchAccount(sc);
+                    System.out.println("Receive:");
+                    Account accountB = bankService.searchAccount(sc);
+
+                    System.out.printf("%s what value you want to tranfer to %s: $", accountA.getClient().getName(),
+                            accountB.getClient().getName());
+                    amount = sc.nextDouble();
+
+                    bankService.transfer(accountA, accountB, amount);
+
+                    break;
+                case 5:
+                    bankService.seeAllAccounts();
+                    break;
+                case 6:
+                    menu.changeInfoMenu();
+                    op = sc.nextInt();
+                    account = bankService.searchAccount(sc);
+                    switch (op) {
+                        case 1:
+                            System.out.print("Enter the new Name:");
+                            String newName = sc.next();
+                            account.getClient().setName(newName);
+                            break;
+                        case 2:
+                            System.out.print("Enter the new Age:");
+                            Integer newAge = sc.nextInt();
+                            account.getClient().setAge(newAge);
+                            break;
+                        case 3:
+                            System.out.print("Enter the new Phone:");
+                            String newPhone = sc.next();
+                            account.getClient().setPhone(newPhone);
+                            break;
+                        case 0:
+                            System.out.println("Exiting...");
+                            break;
+
+                        default:
+                            System.out.println("Option invalid");
+                            break;
+                    }
+
+                    break;
+                case 7:
+                    account = bankService.searchAccount(sc);
+
+                    account.setStatus(Status.CLOSED);
+                    break;
+                case 0:
+                    System.out.println("Exiting...");
+                    active = false;
+                    break;
+                default:
+                    System.out.println("Option invalid");
+                    break;
+            }
         }
 
         sc.close();

@@ -20,9 +20,24 @@ public class Menu {
         System.out.println("════════════════════════════════════");
         System.out.println("1 - Deposit");
         System.out.println("2 - Withdraw");
-        System.out.println("3 - Check Balance");
+        System.out.println("3 - See account");
         System.out.println("4 - Transfer");
-        System.out.println("0 - Logout");
+        System.out.println("5 - See all accounts");
+        System.out.println("6 - Change information");
+        System.out.println("7 - Close account");
+        System.out.println("0 - Exit");
+        System.out.println("════════════════════════════════════");
+        System.out.print("Choose an option: ");
+    }
+
+    public void changeInfoMenu(){
+         System.out.println("\n════════════════════════════════════");
+        System.out.println("          CHANGE INFORMATION");
+        System.out.println("════════════════════════════════════");
+        System.out.println("1 - Name");
+        System.out.println("2 - Age");
+        System.out.println("3 - Phone");
+        System.out.println("0 - Exit");
         System.out.println("════════════════════════════════════");
         System.out.print("Choose an option: ");
     }

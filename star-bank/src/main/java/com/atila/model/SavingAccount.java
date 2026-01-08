@@ -5,23 +5,22 @@ import java.util.Date;
 import com.atila.enums.Category;
 import com.atila.enums.Status;
 
-public final class CheckingAccount extends Account {
+public final class SavingAccount extends Account {
 
-    private double withdrawFee = 0.10;
-    private double dailyWithdrawLimit = 0.0;// MAX 2000.00
+    private double interestRate = 0.15;
+    private Integer withdrawLimit = 0;//Max 5
 
-    public CheckingAccount(Integer accountNumber, double balance, Date date, Client client, Status status,
+    public SavingAccount(Integer accountNumber, double balance, Date date, Client client, Status status,
             Category category) {
         super(accountNumber, balance, date, client, status, category);
-
     }
 
-    public double getWithdrawFee() {
-        return withdrawFee;
+    public double getInterestRate() {
+        return interestRate;
     }
 
-    public double getDailyWithdrawLimit() {
-        return dailyWithdrawLimit;
+    public Integer getWithdrawLimit() {
+        return withdrawLimit;
     }
 
     @Override
@@ -37,9 +36,8 @@ public final class CheckingAccount extends Account {
 
     @Override
     public void withdraw(double amount) {
-        if (dailyWithdrawLimit > 2000.00) {
-            throw new IllegalArgumentException("Daily withdraw limit reached");
-
+        if (withdrawLimit >5) {
+            throw new IllegalArgumentException("Withdrawal limit reached");
         }
         if (amount <= 0.0 || amount > balance) {
             throw new IllegalArgumentException("Amount invalid");
@@ -47,8 +45,11 @@ public final class CheckingAccount extends Account {
         if (status == Status.CLOSED) {
             throw new IllegalArgumentException("This account is closed");
         }
-        balance -= amount + (amount * withdrawFee);
-        dailyWithdrawLimit += amount;
+        balance -= amount;
+        withdrawLimit++;
     }
 
+    public void calculateInterest() {
+        balance += balance * interestRate;
+    }
 }

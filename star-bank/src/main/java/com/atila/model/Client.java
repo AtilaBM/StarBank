@@ -29,11 +29,21 @@ public class Client {
     }
 
     public void setName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
         this.name = name;
     }
 
     public Integer getAge() {
         return age;
+    }
+
+    public void setAge(Integer age) {
+        if (age < 18 || age >= 100 || age == null) {
+            throw new IllegalArgumentException("Invalid age");
+        }
+        this.age = age;
     }
 
     public String getCpf() {
